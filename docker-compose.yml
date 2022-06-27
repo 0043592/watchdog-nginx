@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  nginx:
+    container_name: watchdog-nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: always
+    volumes:
+      - "/srv/data/nginx/upstreams:/etc/nginx/upstreams"
+      - "/srv/data/nginx/ssl:/etc/nginx/ssl"
+      - "/srv/data/nginx/conf.d:/etc/nginx/conf.d"
+      - "/srv/data/letsencrypt:/etc/letsencrypt"
+
+    ports:
+      - "80:80"
+      - "443:443"
